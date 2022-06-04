@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            background-color: rgb(12, 17, 27);
+        }
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        nav {
+            display: flex;
+            /* border: 2px solid rgb(204,201,198); */
+            width: 100%;
+            background-color: rgb(12, 17, 27);
+            height: auto;
+            padding: 0%;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        #nav p{
+            margin-left: 40%;
+            font-size: 20px;
+        }
+        #nav p a{
+            color: aliceblue;
+            text-decoration: none;
+
+        }
+
+        #hotstar-logo {
+            height: 40px;
+            width: auto;
+            margin-left: 5%;
+            margin-right: 30%;
+        }
+
+        #container {
+            height: auto;
+            width: 60%;
+            margin: auto;
+            padding: 30px;
+            background-color: rgb(11, 11, 59);
+            border: 2px solid rgb(5, 5, 37);
+            display: flex;
+            gap: 30px;
+        }
+
+        img {
+            height: 500px;
+            width: auto;
+            border-radius: 5px;
+        }
+
+        p:nth-child(1) {
+            font-size: 50px;
+            font-weight: 700;
+            margin-top: 0ch;
+            margin-bottom: 0ch;
+            color: rgb(213, 214, 218);
+            text-shadow: 3px 2px crimson;
+        }
+
+        p:nth-child(2) {
+            font-size: 25px;
+            font-weight: 400;
+            color: rgb(213, 214, 218);
+            margin: 0px 0px;
+            text-shadow: 2px 1px black;
+        }
+
+        #Dp{
+            color: silver;
+            font-size: 18px;
+            font-weight: 400;
+            text-shadow: 2px 1px rgb(163, 26, 49);
+
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="nav">
+        <img id="hotstar-logo"
+            src="https://secure-media.hotstarext.com/web-assets/prod/images/brand-logos/disney-hotstar-logo-dark.svg"
+            alt="">
+        <p>
+            <a href="index.html">
+                Home </a>
+        </p>
+    </nav>
+
+    <div id="container"></div>
+</body>
+
+</html>
+
+<script>
+
+    let data = localStorage.getItem("movie_data");
+
+    data = JSON.parse(data);
+
+    console.log(data);
+
+
+
+    let container = document.getElementById("container");
+
+    let pDiv = document.createElement("div");
+
+
+    let img = document.createElement('img');
+    img.src = data.Poster;
+
+    let p1 = document.createElement('p');
+    p1.innerText = data.Title;
+
+    let p2 = document.createElement('p');
+    p2.innerText = `Released : ${data.Year}`;
+
+    pDiv.append(p1, p2);
+    container.append(img, pDiv);
+
+    async function getRating(data) {
+        let imdb = data.imdbID;
+
+        // console.log("imdb", imdb);
+        let respon = await fetch(`https://www.omdbapi.com/?i=${imdb}&apikey=62f4a184`);
+        let data_rate = await respon.json();
+        console.log("rating_data", data_rate);
+
+        appendRating(data_rate);
+
+    }
+
+    
+    getRating(data);
+
+
+    function appendRating(elem) {
+
+
+        let actor = document.createElement('p');
+        actor.innerText = `Actors: ${elem.Actors}`;
+        actor.setAttribute("id", "Dp");
+
+        let award = document.createElement('p');
+        award.innerText = `Awards: ${elem.Awards}`;
+        award.setAttribute("id", "Dp");
+
+
+        let time = document.createElement('p');
+        time.innerText = `Runtime: ${elem.Runtime}`;
+        time.setAttribute("id", "Dp");
+
+        let country = document.createElement('p');
+        country.innerText = `Country: ${elem.Country}`;
+        country.setAttribute("id", "Dp");
+
+        let genre = document.createElement('p');
+        genre.innerText = `Genre: ${elem.Genre}`;
+        genre.setAttribute("id", "Dp");
+
+        let director = document.createElement('p');
+        director.innerText = `Director: ${elem.Director}`;
+        director.setAttribute("id", "Dp");
+
+        let writer = document.createElement('p');
+        writer.innerText = `Writer: ${elem.Writer}`;
+        writer.setAttribute("id", "Dp");
+
+        let place = document.createElement('p');
+        place.innerText = `Plot: ${elem.Plot}`;
+        place.setAttribute("id", "Dp");
+
+        let lang = document.createElement('p');
+        lang.innerText = `Language: ${elem.Language}`;
+        lang.setAttribute("id", "Dp");
+
+        let rating = document.createElement('p');
+        rating.innerText = `IMDB Rating : ${elem.imdbRating}`;
+        rating.setAttribute("id", "Dp");
+
+        pDiv.append(actor, award, time, country, genre, director, writer, place, lang, rating);
+    }
+
+
+
+</script>
